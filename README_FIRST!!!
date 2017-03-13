@@ -1,0 +1,5 @@
+pada aplikasi ini ada beberapa folder (package), yaitu :
+- entity : untuk menampung model data sesuai pada database.
+- service : untuk mengelola operasi crud pada aplikasi ini.
+- ui : untuk kelas-kelas tampilan pada android seperti activity, fragment.
+- util : untuk mengelola kebutuhan variabel global dan operasi interface yang dibutuhkan aplikasi.
