@@ -15,7 +15,10 @@
     <string name="anggaran">Anggaran</string>
     <string name="waktu">Batas Waktu</string>
     <string name="foto">Foto</string>
+    <string name="find_location">Cari lokasi saya</string>
     <string name="harga">Harga</string>
+    <string name="lat">Latitude</string>
+    <string name="lng">Longitude</string>
 
     <string name="profil">Profil</string>
     <string name="my_request">Tender</string>
@@ -43,5 +46,11 @@
     <string name="title_activity_add">AddActivity</string>
     <string name="title_activity_mine">MineActivity</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="location_key">AIzaSyCOlE_ReKxeozahjkcIk80pkRBa7yFvv3k</string>
+    <string name="lokasi">Lokasi</string>
+    <string name="deal">Deal</string>
+    <string name="kategori">Kategori</string>
+    <string name="ketikkan_kata">Ketikkan kata ...</string>
 
 </resources>

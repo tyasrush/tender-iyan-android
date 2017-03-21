@@ -11,7 +11,9 @@ public class DialogUtil {
     private static ProgressDialog progressDialog;
 
     public static DialogUtil getInstance(Context context) {
-        progressDialog = new ProgressDialog(context);
+        if (progressDialog == null)
+            progressDialog = new ProgressDialog(context);
+
         return new DialogUtil();
     }
 

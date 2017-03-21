@@ -39,6 +39,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.titleView.setText(tenders.get(position).getName());
         holder.priceView.setText("Anggaran : " + String.valueOf(tenders.get(position).getAnggaran()));
+        holder.kategoriView.setText(tenders.get(position).getKategori().getNama());
         Glide.with(context)
                 .load(tenders.get(position).getFoto())
                 .into(holder.itemImageView);
@@ -58,12 +59,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         private ImageView itemImageView;
         private TextView titleView;
         private TextView priceView;
+        private TextView kategoriView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemImageView = (ImageView) itemView.findViewById(R.id.image_item_home);
             titleView = (TextView) itemView.findViewById(R.id.title_item_home);
             priceView = (TextView) itemView.findViewById(R.id.price_item_home);
+            kategoriView = (TextView) itemView.findViewById(R.id.price_item_kategori);
             itemView.setOnClickListener(this);
         }
 

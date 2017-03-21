@@ -22,19 +22,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.tender.iyan.R;
+import com.tender.iyan.entity.Kategori;
 import com.tender.iyan.entity.Tender;
 import com.tender.iyan.service.TenderService;
+import com.tender.iyan.ui.adapter.KategoriAdapter;
 import com.tender.iyan.util.DialogUtil;
 import com.tender.iyan.util.UserUtil;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
-public class AddActivity extends AppCompatActivity implements View.OnClickListener, TenderService.AddView, DatePickerDialog.OnDateSetListener {
+public class AddActivity extends AppCompatActivity implements View.OnClickListener, TenderService.AddView, DatePickerDialog.OnDateSetListener, TenderService.ListKategoriView {
 
     private final int CAMERA = 0;
     private final int WRITE_EXTERNAL = 1;
@@ -44,6 +48,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private EditText anggaranText;
     private EditText waktuText;
     private EditText imageText;
+    private Spinner spinner;
     private Button fotoButton;
     private Button saveButton;
     private Button waktuButton;
@@ -64,11 +69,14 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        TenderService.getInstance().getKategoris(this);
+
         nameText = (EditText) findViewById(R.id.et_name);
         descEditText = (EditText) findViewById(R.id.et_deskripsi);
         anggaranText = (EditText) findViewById(R.id.et_anggaran);
         waktuText = (EditText) findViewById(R.id.et_waktu);
         imageText = (EditText) findViewById(R.id.et_gambar);
+        spinner = (Spinner) findViewById(R.id.spinner_kategori);
 
         fotoButton = (Button) findViewById(R.id.btn_gambar);
         if (fotoButton != null)
@@ -116,7 +124,9 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 tender.setDeskripsi(descEditText.getText().toString());
                 tender.setAnggaran(Integer.parseInt(anggaranText.getText().toString()));
                 tender.setWaktu(waktu);
+                tender.setIdKategori((int) spinner.getAdapter().getItemId(spinner.getSelectedItemPosition()));
                 tender.setFoto(imagePath);
+
                 DialogUtil.getInstance(this).showProgressDialog("", "Uploading...", true);
                 TenderService.getInstance().upload(this, tender);
             }
@@ -218,8 +228,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     }
 
     @Override public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        waktu = i2 + "-" + i1 + "-" + i;
-        waktuText.setText(i2 + "/" + i1 + "/" + i);
+        waktu = i2 + "-" + (i1 + 1) + "-" + i;
+        waktuText.setText(i2 + "/" + (i1 + 1) + "/" + i);
     }
 
     private File getOutputMediaFile(){
@@ -235,5 +245,13 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         return new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_"+ timeStamp + ".jpg");
+    }
+
+    @Override public void onLoadedDataSuccess(List<Kategori> kategoris) {
+        spinner.setAdapter(new KategoriAdapter(kategoris));
+    }
+
+    @Override public void onLoadFailed(String message) {
+        Toast.makeText(this, "Terjadi kesalahan untuk load data kategori", Toast.LENGTH_SHORT).show();
     }
 }

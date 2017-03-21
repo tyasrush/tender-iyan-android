@@ -105,40 +105,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             TenderService.getInstance().getAll(this, new User());
         }
 
-        if (item.getItemId() == R.id.option_alphabet) {
-            if (!tenders.isEmpty()) {
-                if (progressDialog != null)
-                    progressDialog.show();
-
-                tenders.clear();
-                homeAdapter.notifyDataSetChanged();
-            }
-
-            TenderService.getInstance().getAllbyFilter(this, TenderService.ALPHABET);
-        }
-
-        if (item.getItemId() == R.id.option_cheapest) {
-            if (!tenders.isEmpty()) {
-                if (progressDialog != null)
-                    progressDialog.show();
-
-                tenders.clear();
-                homeAdapter.notifyDataSetChanged();
-            }
-
-            TenderService.getInstance().getAllbyFilter(this, TenderService.CHEAPEST);
-        }
-
-        if (item.getItemId() == R.id.option_most_expensive) {
-            if (!tenders.isEmpty()) {
-                if (progressDialog != null)
-                    progressDialog.show();
-
-                tenders.clear();
-                homeAdapter.notifyDataSetChanged();
-            }
-
-            TenderService.getInstance().getAllbyFilter(this, TenderService.MOST_EXPENSIVE);
+        if (item.getItemId() == R.id.option_search) {
+            startActivity(new Intent(this, SearchActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
@@ -175,6 +143,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onLoadedDataSuccess(List<Tender> tenders) {
+        Log.d(getClass().getSimpleName(), "onLoadedDataSuccess: " + tenders.toString());
         if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
 

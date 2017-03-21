@@ -7,22 +7,8 @@
         android:title="@string/refresh"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/option_filter"
-        android:icon="@drawable/ic_filter_list_white_24dp"
+        android:id="@+id/option_search"
+        android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/refresh"
-        app:showAsAction="ifRoom">
-
-        <menu>
-            <item
-                android:id="@+id/option_alphabet"
-                android:title="@string/alphabet"/>
-            <item
-                android:id="@+id/option_cheapest"
-                android:title="@string/cheapest"/>
-            <item
-                android:id="@+id/option_most_expensive"
-                android:title="@string/expensive"/>
-        </menu>
-
-    </item>
+        app:showAsAction="ifRoom"/>
 </menu>
