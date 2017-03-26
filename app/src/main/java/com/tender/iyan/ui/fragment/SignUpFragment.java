@@ -44,7 +44,6 @@ public class SignUpFragment extends Fragment implements UserService.SignUpView, 
 
     @Override
     public void onSignUpSuccess() {
-//        getFragmentManager().beginTransaction().replace(R.id.container_login, new LoginFragment()).commit();
         getFragmentManager().popBackStack();
         Toast.makeText(getContext(), "Sign Up success, please login with your account", Toast.LENGTH_SHORT).show();
     }

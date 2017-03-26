@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-/**
- * Created by tyasrus on 13/07/16.
- */
 public class UserUtil {
 
     public static final String ID_USER = "id_user";

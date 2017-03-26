@@ -6,13 +6,11 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by tyas on 3/20/17.
+ * model untuk kategori
+ * mewakili atribut-atribut yang dimiliki kategori
  */
-
 public class Kategori implements Parcelable {
-    @SerializedName("id")
     private int id;
-    @SerializedName("nama")
     private String nama;
 
     public Kategori() {

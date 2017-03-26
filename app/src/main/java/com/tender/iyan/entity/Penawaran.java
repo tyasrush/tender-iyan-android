@@ -18,9 +18,7 @@ public class Penawaran implements Parcelable {
     private String deskripsi;
     private String foto;
     private int harga;
-    @SerializedName("lat")
     private double lat;
-    @SerializedName("lng")
     private double lng;
 
     public Penawaran() {

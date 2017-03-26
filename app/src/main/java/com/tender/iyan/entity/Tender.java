@@ -20,7 +20,6 @@ public class Tender implements Parcelable {
     private String deskripsi;
     private int anggaran;
     private String waktu;
-    @SerializedName("kategori")
     private Kategori kategori;
 
     public Tender() {

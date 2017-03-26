@@ -12,10 +12,6 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
-/**
- * Created by tyas on 3/21/17.
- */
-
 public class KategoriAdapter extends BaseAdapter {
 
     private List<Kategori> list;

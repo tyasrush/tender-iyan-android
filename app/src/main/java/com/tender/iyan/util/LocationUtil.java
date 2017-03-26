@@ -22,10 +22,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.security.ProviderInstaller;
 
-/**
- * Created by tyas on 3/20/17.
- */
-
 public class LocationUtil implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final int LOCATION_REQUEST = 2;

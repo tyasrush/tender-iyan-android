@@ -19,9 +19,6 @@ import com.tender.iyan.ui.activity.HomeActivity;
 import com.tender.iyan.util.DialogUtil;
 import com.tender.iyan.util.UserUtil;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class LoginFragment extends Fragment implements View.OnClickListener, UserService.LoginView {
 
     private EditText emailText;

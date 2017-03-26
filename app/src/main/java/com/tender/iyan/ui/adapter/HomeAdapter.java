@@ -15,9 +15,6 @@ import com.tender.iyan.entity.Tender;
 
 import java.util.List;
 
-/**
- * Created by tyasrus on 13/07/16.
- */
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private OnItemTenderClickListener onItemTenderClickListener;

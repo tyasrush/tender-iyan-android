@@ -3,9 +3,6 @@ package com.tender.iyan.util;
 import android.app.ProgressDialog;
 import android.content.Context;
 
-/**
- * Created by tyas on 8/14/16.
- */
 public class DialogUtil {
 
     private static ProgressDialog progressDialog;

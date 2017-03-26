@@ -54,16 +54,19 @@ public class TenderService {
         return new TenderService();
     }
 
-    //untuk mengambil semua tender yang ada pad server
+    //untuk mengambil semua tender yang ada pada server
     public void getAll(final ListHomeView listHomeView, User user) {
         if (user.getId() != 0) {
+            //FormBody.Builder ini bertujuan untuk mengirim data dengan beberapa parameter ke server
             body = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
                     .addFormDataPart("id", String.valueOf(user.getId()))
                     .build();
 
+            //request ini untuk menjalankan servis http ke server
             request = new Request.Builder()
                     .url(BuildConfig.BASE_URL + BuildConfig.LIST_TENDER_URL)
+                    //http request post
                     .post(body)
                     .build();
         } else {
@@ -72,6 +75,7 @@ public class TenderService {
                     .build();
         }
 
+        //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -95,6 +99,7 @@ public class TenderService {
                                     List<Tender> tenders = new ArrayList<>();
                                     JSONArray array = jsonObject.getJSONArray("data");
                                     Log.d(TAG, "json object : " + array);
+                                    //untuk melakukan parsing json object kedalam model dengan perulangan
                                     for (int i = 0; i < array.length(); i++) {
                                         JSONObject arrayValue = array.getJSONObject(i);
                                         Tender tender = new Tender();
@@ -131,12 +136,14 @@ public class TenderService {
         });
     }
 
-    //untuk mengambil semua tender yang ada pad server
+    //untuk mengambil semua kategori dari server
     public void getKategoris(final ListKategoriView view) {
+        //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
                 .url(BuildConfig.BASE_URL + BuildConfig.LIST_KATEGORI_URL)
                 .build();
 
+        //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -183,9 +190,10 @@ public class TenderService {
         });
     }
 
-    //untuk mengambil semua tender yang ada pada server dengan urutan alphabet
+    //untuk mengambil semua tender yang ada pada server dengan filter : alphabet, termurah, termahal
     public void getAllbyFilter(final ListHomeView listHomeView, int state) {
         if (state == ALPHABET) {
+            //FormBody.Builder ini bertujuan untuk mengirim data dengan beberapa parameter ke server
             body = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
                     .addFormDataPart("alphabet", String.valueOf(true))
@@ -193,6 +201,7 @@ public class TenderService {
         }
 
         if (state == CHEAPEST) {
+            //FormBody.Builder ini bertujuan untuk mengirim data dengan beberapa parameter ke server
             body = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
                     .addFormDataPart("termurah", String.valueOf(true))
@@ -200,17 +209,20 @@ public class TenderService {
         }
 
         if (state == MOST_EXPENSIVE) {
+            //FormBody.Builder ini bertujuan untuk mengirim data dengan beberapa parameter ke server
             body = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
                     .addFormDataPart("termahal", String.valueOf(true))
                     .build();
         }
 
+        //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
                 .url(BuildConfig.BASE_URL + BuildConfig.LIST_FILTER_TENDER_URL)
                 .post(body)
                 .build();
 
+        //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -233,6 +245,7 @@ public class TenderService {
                                 if (jsonObject.getString("list_status").equals("success")) {
                                     List<Tender> tenders = new ArrayList<>();
                                     JSONArray array = jsonObject.getJSONArray("data");
+                                    //perulangan untuk mengubah jsonobject ke dalam model tender
                                     for (int i = 0; i < array.length(); i++) {
                                         JSONObject arrayValue = array.getJSONObject(i);
                                         Log.d(TAG, "json object : " + jsonObject.toString());
@@ -270,8 +283,10 @@ public class TenderService {
         });
     }
 
+    //untuk menambahkan tender baru ke dalam server
     public void upload(final AddView addView, Tender tender) {
         File file = new File(tender.getFoto());
+        //FormBody.Builder ini bertujuan untuk mengirim data dengan beberapa parameter ke server
         body = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("image", file.getName(), RequestBody.create(MediaType.parse("image/*"), file))
@@ -283,11 +298,13 @@ public class TenderService {
                 .addFormDataPart("id_kategori", String.valueOf(tender.getIdKategori()))
                 .build();
 
+        //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
                 .url(BuildConfig.BASE_URL + BuildConfig.ADD_TENDER_URL)
                 .post(body)
                 .build();
 
+        //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -324,8 +341,10 @@ public class TenderService {
         });
     }
 
+    //untuk menambahkan penawaran baru kedalam tender tertentu berdasarkan id tender ke dalam server
     public void uploadPenawaran(final UploadPenawaranView uploadPenawaranView, Penawaran penawaran) {
         File file = new File(penawaran.getFoto());
+        //FormBody.Builder ini bertujuan untuk mengirim data dengan beberapa parameter ke server
         body = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("image", file.getName(), RequestBody.create(MediaType.parse("image/*"), file))
@@ -338,11 +357,13 @@ public class TenderService {
                 .addFormDataPart("lng", String.valueOf(penawaran.getLng()))
                 .build();
 
+        //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
                 .url(BuildConfig.BASE_URL + BuildConfig.ADD_PENAWARAN_URL)
                 .post(body)
                 .build();
 
+        //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -379,18 +400,22 @@ public class TenderService {
         });
     }
 
+    //untuk mengubah status tender dan penawaran
     public void uploadDeal(final SaveDealView view, int idRequest, int idPenawaran) {
+        //FormBody.Builder ini bertujuan untuk mengirim data dengan beberapa parameter ke server
         body = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("id_request", String.valueOf(idRequest))
                 .addFormDataPart("id_penawaran", String.valueOf(idPenawaran))
                 .build();
 
+        //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
                 .url(BuildConfig.BASE_URL + BuildConfig.SAVE_DEAL_URL)
                 .post(body)
                 .build();
 
+        //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -431,17 +456,21 @@ public class TenderService {
         });
     }
 
+    //untuk mengambil semua penawaran yang ada pada tender sesuai dengan id tender
     public void getPenawaranByTender(final GetPenawaranView getPenawaranView, Tender tender) {
+        //FormBody.Builder ini bertujuan untuk mengirim data dengan beberapa parameter ke server
         body = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("id_request", String.valueOf(tender.getId()))
                 .build();
 
+        //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
                 .url(BuildConfig.BASE_URL + BuildConfig.DETAIL_TENDER_URL)
                 .post(body)
                 .build();
 
+        //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -465,6 +494,7 @@ public class TenderService {
                                     List<Penawaran> penawaranList = new ArrayList<>();
                                     JSONArray array = jsonObject.getJSONArray("data");
                                     Log.d(TAG, "josn raw : " + jsonObject.getJSONArray("data"));
+                                    //perulangan untuk mengubah jsonobject ke dalam model penawaran
                                     for (int i = 0; i < array.length(); i++) {
                                         JSONObject arrayValue = array.getJSONObject(i);
                                         Penawaran penawaran = new Penawaran();
@@ -493,7 +523,9 @@ public class TenderService {
         });
     }
 
+    //untuk mengurutkan atau filter penawaran yang ada pada tender tertentu
     public void filterPenawaranByTender(final GetPenawaranView getPenawaranView, Tender tender, int state) {
+        //FormBody.Builder ini bertujuan untuk mengirim data dengan beberapa parameter ke server
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("id_request", String.valueOf(tender.getId()));
@@ -515,11 +547,13 @@ public class TenderService {
 
         body = builder.build();
 
+        //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
                 .url(BuildConfig.BASE_URL + BuildConfig.LIST_FILTER_PENAWARAN_URL)
                 .post(body)
                 .build();
 
+        //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -568,17 +602,20 @@ public class TenderService {
         });
     }
 
+    //untuk melakukan pencarian tender berdasarkan nama tender
     public void searchTender(final ListHomeView listHomeView, String param) {
         body = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("q", param)
                 .build();
 
+        //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
                 .url(BuildConfig.BASE_URL + BuildConfig.SEARCH_URL)
                 .post(body)
                 .build();
 
+        //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -640,37 +677,31 @@ public class TenderService {
 
     public interface ListKategoriView {
         void onLoadedDataSuccess(List<Kategori> kategoris);
-
         void onLoadFailed(String message);
     }
 
     public interface ListHomeView {
         void onLoadedDataSuccess(List<Tender> tenders);
-
         void onLoadFailed(String message);
     }
 
     public interface AddView {
         void onAddedSuccess();
-
         void onAddedFailed(String message);
     }
 
     public interface GetPenawaranView {
         void onLoadDataSuccess(List<Penawaran> penawaranList);
-
         void onLoadFailed(String message);
     }
 
     public interface UploadPenawaranView {
         void onAddedSuccess();
-
         void onAddedFailed(String message);
     }
 
     public interface SaveDealView {
         void onSaveSuccess();
-
         void onSaveFailed(String message);
     }
 }

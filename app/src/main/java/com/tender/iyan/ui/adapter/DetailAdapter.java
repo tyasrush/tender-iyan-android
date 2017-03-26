@@ -25,9 +25,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by tyas on 7/15/16.
- */
 public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder> {
 
     private final String TAG = getClass().getName();

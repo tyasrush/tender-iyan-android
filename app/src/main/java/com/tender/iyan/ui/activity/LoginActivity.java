@@ -16,7 +16,7 @@ import com.tender.iyan.ui.fragment.LoginFragment;
 import com.tender.iyan.util.UserUtil;
 
 /**
- * Activivty login untuk membentuk tampilan login dan sign up pada pertama kali pengguna membuka aplikasi
+ * Activity login untuk membentuk tampilan login dan sign up pada pertama kali pengguna membuka aplikasi
  */
 public class LoginActivity extends AppCompatActivity {
 
