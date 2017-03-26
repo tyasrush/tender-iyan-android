@@ -1,5 +1,6 @@
 package com.tender.iyan.ui.fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ public class SignUpFragment extends Fragment implements UserService.SignUpView, 
     private EditText contactText;
     private EditText addressText;
     private Button signUpButton;
+    private ProgressDialog dialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,16 +42,26 @@ public class SignUpFragment extends Fragment implements UserService.SignUpView, 
         signUpButton = (Button) view.findViewById(R.id.btn_sign_up);
         if (signUpButton != null)
             signUpButton.setOnClickListener(this);
+
+        dialog = new ProgressDialog(getActivity());
+        dialog.setMessage("Tunggu sebentar...");
+        dialog.setCancelable(false);
     }
 
     @Override
     public void onSignUpSuccess() {
+        if (dialog.isShowing())
+            dialog.dismiss();
+
         getFragmentManager().popBackStack();
         Toast.makeText(getContext(), "Sign Up success, please login with your account", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onSignUpFailed(String message) {
+        if (dialog.isShowing())
+            dialog.dismiss();
+
         Toast.makeText(getContext(), "Sign Up failed, error : " + message, Toast.LENGTH_SHORT).show();
     }
 
@@ -78,6 +90,7 @@ public class SignUpFragment extends Fragment implements UserService.SignUpView, 
                 user.setName(nameText.getText().toString());
                 user.setContact(contactText.getText().toString());
                 user.setAlamat(addressText.getText().toString());
+                dialog.show();
                 UserService.getInstance().signUp(this, user);
             }
         }

@@ -1,6 +1,7 @@
 package com.tender.iyan.ui.fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +17,6 @@ import com.tender.iyan.R;
 import com.tender.iyan.entity.User;
 import com.tender.iyan.service.UserService;
 import com.tender.iyan.ui.activity.HomeActivity;
-import com.tender.iyan.util.DialogUtil;
 import com.tender.iyan.util.UserUtil;
 
 public class LoginFragment extends Fragment implements View.OnClickListener, UserService.LoginView {
@@ -25,6 +25,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
     private EditText passwordText;
     private Button loginButton;
     private Button signUpButton;
+    private ProgressDialog dialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,7 +46,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
         if (signUpButton != null)
             signUpButton.setOnClickListener(this);
 
-
+        dialog = new ProgressDialog(getActivity());
+        dialog.setMessage("Tunggu sebentar...");
+        dialog.setCancelable(false);
     }
 
     @Override
@@ -61,8 +64,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
                 User user = new User();
                 user.setEmail(emailText.getText().toString());
                 user.setPassword(passwordText.getText().toString());
-                DialogUtil.getInstance(getActivity()).showProgressDialog("", "Logging in...", true);
                 UserService.getInstance().login(this, user);
+                dialog.show();
             }
         }
 
@@ -73,7 +76,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
 
     @Override
     public void onLoginSuccess(User user) {
-        DialogUtil.getInstance(getActivity()).dismiss();
+        if (dialog.isShowing())
+            dialog.dismiss();
+
         UserUtil.getInstance(getContext()).setLoginState(user.getId(), true);
         startActivity(new Intent(getContext(), HomeActivity.class));
         getActivity().finish();
@@ -82,7 +87,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
 
     @Override
     public void onLoginFailed(String message) {
-        DialogUtil.getInstance(getActivity()).dismiss();
+        if (dialog.isShowing())
+            dialog.dismiss();
+
         Toast.makeText(getContext(), "Login failed, error : " + message, Toast.LENGTH_SHORT).show();
     }
 }

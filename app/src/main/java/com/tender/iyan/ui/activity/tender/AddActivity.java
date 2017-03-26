@@ -2,6 +2,7 @@ package com.tender.iyan.ui.activity.tender;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,7 +31,6 @@ import com.tender.iyan.entity.Kategori;
 import com.tender.iyan.entity.Tender;
 import com.tender.iyan.service.TenderService;
 import com.tender.iyan.ui.adapter.KategoriAdapter;
-import com.tender.iyan.util.DialogUtil;
 import com.tender.iyan.util.UserUtil;
 
 import java.io.File;
@@ -57,6 +57,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private String waktu;
 
     private Uri fileImage;
+
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +91,10 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         waktuButton = (Button) findViewById(R.id.btn_waktu);
         if (waktuButton != null)
             waktuButton.setOnClickListener(this);
+
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Tunggu sebentar...");
+        dialog.setCancelable(false);
     }
 
     @Override
@@ -127,7 +133,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 tender.setIdKategori((int) spinner.getAdapter().getItemId(spinner.getSelectedItemPosition()));
                 tender.setFoto(imagePath);
 
-                DialogUtil.getInstance(this).showProgressDialog("", "Uploading...", true);
+                dialog.show();
                 TenderService.getInstance().upload(this, tender);
             }
         }
@@ -217,13 +223,17 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onAddedSuccess() {
-        DialogUtil.getInstance(this).dismiss();
+        if (dialog.isShowing())
+            dialog.dismiss();
+
         finish();
     }
 
     @Override
     public void onAddedFailed(String message) {
-        DialogUtil.getInstance(this).dismiss();
+        if (dialog.isShowing())
+            dialog.dismiss();
+
         Toast.makeText(this, "upload error : " + message, Toast.LENGTH_SHORT).show();
     }
 
