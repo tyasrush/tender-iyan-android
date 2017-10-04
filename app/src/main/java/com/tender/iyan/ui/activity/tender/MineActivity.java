@@ -75,6 +75,7 @@ public class MineActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadedDataSuccess(List<Tender> tenders) {
+        Toast.makeText(this, tenders != null ? "Daftar tender ditemukan" : "Daftar tender tidak ditemukan", Toast.LENGTH_SHORT).show();
         this.tenders.addAll(tenders);
         homeAdapter.notifyDataSetChanged();
     }

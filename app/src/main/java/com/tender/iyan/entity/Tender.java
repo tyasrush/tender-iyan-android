@@ -3,10 +3,6 @@ package com.tender.iyan.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.Date;
-
 /**
  * model untuk tender
  * mewakili atribut-atribut yang dimiliki tender

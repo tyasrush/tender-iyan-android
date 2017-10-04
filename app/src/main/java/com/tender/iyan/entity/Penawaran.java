@@ -2,9 +2,6 @@ package com.tender.iyan.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.google.gson.annotations.SerializedName;
-
 /**
  * model untuk penawaran
  * mewakili atribut-atribut yang dimiliki penawaran

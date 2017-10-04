@@ -6,7 +6,9 @@ import android.util.Log;
 
 import com.tender.iyan.BuildConfig;
 import com.tender.iyan.entity.User;
+import com.tender.iyan.service.api.Api;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +34,7 @@ public class UserService {
     }
 
     //untuk melakukan pengecekan user ke server
-    public void login(final LoginView loginView, final User user) {
+    public void login(final LoginView view, final User user) {
         //FormBody.Builder ini bertujuan untuk mengirim data dengan beberapa parameter ke server
         body = new FormBody.Builder()
                 .add("email", user.getEmail())
@@ -41,7 +43,7 @@ public class UserService {
 
         //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
-                .url(BuildConfig.BASE_URL + BuildConfig.LOGIN_URL)
+                .url(BuildConfig.BASE_URL + Api.USER_LOGIN)
                 //http request post
                 .post(body)
                 .build();
@@ -53,7 +55,7 @@ public class UserService {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        loginView.onLoginFailed(e.getMessage());
+                        view.onLoginFailed(e.getMessage());
                     }
                 });
             }
@@ -66,15 +68,18 @@ public class UserService {
                         if (response.isSuccessful()) {
                             try {
                                 JSONObject jsonObject = new JSONObject(response.body().string());
-                                if (jsonObject.getString("login_status").equals("success")) {
-                                    User userResult = new User();
-                                    userResult.setId(jsonObject.getInt("id"));
-                                    loginView.onLoginSuccess(userResult);
+                                if (jsonObject.getString("status").equals("success")) {
+                                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                    JSONObject dataObject = jsonArray.getJSONObject(0);
+                                    User result = new User();
+                                    result.setId(dataObject.getInt("id"));
+                                    view.onLoginSuccess(result);
                                 } else {
-                                    loginView.onLoginFailed("Akun invalid");
+                                    view.onLoginFailed("Akun tidak valid");
                                 }
                             } catch (JSONException | IOException e) {
                                 e.printStackTrace();
+                                view.onLoginFailed("Akun tidak valid");
                             }
 
                         }
@@ -85,7 +90,7 @@ public class UserService {
     }
 
     //untuk melakukan pendaftaran user baru
-    public void signUp(final SignUpView signUpView, User user) {
+    public void signUp(final SignUpView view, User user) {
         //FormBody.Builder ini bertujuan untuk mengirim data dengan beberapa parameter ke server
         body = new FormBody.Builder()
                 .add("name", user.getName())
@@ -97,7 +102,7 @@ public class UserService {
 
         //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
-                .url(BuildConfig.BASE_URL + BuildConfig.SIGN_UP_URL)
+                .url(BuildConfig.BASE_URL + Api.USER_SIGN_UP)
                 //http request post
                 .post(body)
                 .build();
@@ -109,7 +114,7 @@ public class UserService {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        signUpView.onSignUpFailed(e.getMessage());
+                        view.onSignUpFailed(e.getMessage());
                     }
                 });
             }
@@ -122,15 +127,15 @@ public class UserService {
                         if (response.isSuccessful()) {
                             try {
                                 JSONObject jsonObject = new JSONObject(response.body().string());
-                                if (jsonObject.getString("signup_status").equals("success")) {
-                                    signUpView.onSignUpSuccess();
+                                if (jsonObject.getString("status").equals("success")) {
+                                    view.onSignUpSuccess();
                                 } else {
-                                    signUpView.onSignUpFailed("Sign up invalid");
+                                    view.onSignUpFailed("Daftar gagal");
                                 }
                             } catch (JSONException | IOException e) {
                                 e.printStackTrace();
+                                view.onSignUpFailed("Daftar gagal");
                             }
-
                         }
                     }
                 });
@@ -147,7 +152,7 @@ public class UserService {
 
         //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
-                .url(BuildConfig.BASE_URL + BuildConfig.USER_URL)
+                .url(BuildConfig.BASE_URL + Api.USER_GET)
                 //http request post
                 .post(body)
                 .build();
@@ -173,19 +178,21 @@ public class UserService {
                             try {
                                 JSONObject jsonObject = new JSONObject(response.body().string());
                                 if (jsonObject.getString("status").equals("success")) {
+                                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                    JSONObject dataObject = jsonArray.getJSONObject(0);
                                     User result = new User();
-                                    result.setName(jsonObject.getString("nama"));
-                                    result.setEmail(jsonObject.getString("email"));
-                                    result.setContact(jsonObject.getString("contact"));
-                                    result.setAlamat(jsonObject.getString("alamat"));
+                                    result.setName(dataObject.getString("nama"));
+                                    result.setEmail(dataObject.getString("email"));
+                                    result.setContact(dataObject.getString("contact"));
+                                    result.setAlamat(dataObject.getString("alamat"));
                                     showView.onLoadSuccess(result);
                                 } else {
-                                    showView.onLoadFailed("Show user failed");
+                                    showView.onLoadFailed("Data tidak ditemukan");
                                 }
                             } catch (JSONException | IOException e) {
                                 e.printStackTrace();
+                                showView.onLoadFailed("Data tidak ditemukan");
                             }
-
                         }
                     }
                 });
@@ -195,16 +202,19 @@ public class UserService {
 
     public interface LoginView {
         void onLoginSuccess(User user);
+
         void onLoginFailed(String message);
     }
 
     public interface SignUpView {
         void onSignUpSuccess();
+
         void onSignUpFailed(String message);
     }
 
     public interface ShowView {
         void onLoadSuccess(User user);
+
         void onLoadFailed(String message);
     }
 }

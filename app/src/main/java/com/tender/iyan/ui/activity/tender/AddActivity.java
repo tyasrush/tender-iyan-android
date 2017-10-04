@@ -144,7 +144,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
         if (view.getId() == waktuButton.getId()) {
             java.util.Calendar calendar = java.util.Calendar.getInstance();
-            new DatePickerDialog(this, this, calendar.get(java.util.Calendar.YEAR), calendar.get(java.util.Calendar.MONTH), calendar.get(java.util.Calendar.DAY_OF_MONTH)).show();
+            new DatePickerDialog(this, this, calendar.get(java.util.Calendar.YEAR),
+                    calendar.get(java.util.Calendar.MONTH), calendar.get(java.util.Calendar.DAY_OF_MONTH)).show();
         }
     }
 
@@ -174,7 +175,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 .setItems(new String[]{"Galeri", "Kamera"}, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialogInterface, int i) {
                         if (i == 0) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                                    ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(AddActivity.this,
                                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                         WRITE_EXTERNAL);
@@ -186,7 +188,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                         }
 
                         if (i == 1) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                                    ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(AddActivity.this,
                                         new String[]{Manifest.permission.CAMERA},
                                         CAMERA);

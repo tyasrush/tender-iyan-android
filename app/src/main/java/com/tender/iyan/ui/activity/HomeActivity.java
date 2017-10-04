@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private HomeAdapter homeAdapter;
     private List<Tender> tenders = new ArrayList<>();
     private FloatingActionButton addButton;
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,21 +68,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_home);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(homeAdapter);
-        TenderService.getInstance().getAll(this, new User());
+        TenderService.getInstance().getAll(this, null);
 
         addButton = (FloatingActionButton) findViewById(R.id.fab_add);
         addButton.setOnClickListener(this);
 
         //untuk menampilkan dialog load data
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Mengambil data...");
-        progressDialog.setCancelable(false);
+//        progressDialog = new ProgressDialog(this);
+//        progressDialog.setMessage("Mengambil data...");
+//        progressDialog.setCancelable(false);
     }
 
     @Override protected void onStart() {
         super.onStart();
-        if (tenders.isEmpty() && progressDialog != null)
-            progressDialog.show();
+//        if (tenders.isEmpty() && progressDialog != null)
+//            progressDialog.show();
     }
 
     @Override
@@ -95,14 +95,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.option_refresh) {
             if (!tenders.isEmpty()) {
-                if (progressDialog != null)
-                    progressDialog.show();
+//                if (progressDialog != null)
+//                    progressDialog.show();
 
                 tenders.clear();
                 homeAdapter.notifyDataSetChanged();
             }
 
-            TenderService.getInstance().getAll(this, new User());
+            TenderService.getInstance().getAll(this, null);
         }
 
         if (item.getItemId() == R.id.option_search) {
@@ -144,8 +144,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onLoadedDataSuccess(List<Tender> tenders) {
         Log.d(getClass().getSimpleName(), "onLoadedDataSuccess: " + tenders.toString());
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
+//        if (progressDialog != null && progressDialog.isShowing())
+//            progressDialog.dismiss();
 
         this.tenders.addAll(tenders);
         homeAdapter.notifyDataSetChanged();
@@ -153,10 +153,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onLoadFailed(String message) {
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
+//        if (progressDialog != null && progressDialog.isShowing())
+//            progressDialog.dismiss();
 
-        Toast.makeText(this, "Loading data gagal", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
