@@ -143,7 +143,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onLoadedDataSuccess(List<Tender> tenders) {
-        Log.d(getClass().getSimpleName(), "onLoadedDataSuccess: " + tenders.toString());
+        //Log.d(getClass().getSimpleName(), "onLoadedDataSuccess: " + tenders.toString());
 //        if (progressDialog != null && progressDialog.isShowing())
 //            progressDialog.dismiss();
 

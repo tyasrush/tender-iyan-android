@@ -46,11 +46,12 @@
     <string name="title_activity_add">AddActivity</string>
     <string name="title_activity_mine">MineActivity</string>
     <string name="title_activity_profile">ProfileActivity</string>
-    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search">Cari Tender</string>
     <string name="location_key">AIzaSyCOlE_ReKxeozahjkcIk80pkRBa7yFvv3k</string>
     <string name="lokasi">Lokasi</string>
     <string name="deal">Deal</string>
     <string name="kategori">Kategori</string>
     <string name="ketikkan_kata">Ketikkan kata ...</string>
+  <string name="cari_tender">Cari tender...</string>
 
 </resources>

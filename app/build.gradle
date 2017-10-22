@@ -21,7 +21,7 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField "String", "BASE_URL", '"http://192.168.0.39/tender/api/"'
+            buildConfigField "String", "BASE_URL", '"http://192.168.26.103/tender/api/"'
 //            buildConfigField "String", "BASE_URL", '"http://10.0.2.2/tender"'
 //            buildConfigField "String", "BASE_URL", '"http://tender-server.esy.es"'
         }
