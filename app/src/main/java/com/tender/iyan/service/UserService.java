@@ -2,18 +2,9 @@ package com.tender.iyan.service;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
-
-import com.tender.iyan.BuildConfig;
 import com.tender.iyan.entity.User;
-import com.tender.iyan.service.api.Api;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.tender.iyan.service.config.Api;
 import java.io.IOException;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -21,7 +12,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class UserService {
 
@@ -43,7 +36,7 @@ public class UserService {
 
         //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
-                .url(BuildConfig.BASE_URL + Api.USER_LOGIN)
+                .url(Api.BASE_URL + Api.USER_LOGIN)
                 //http request post
                 .post(body)
                 .build();
@@ -102,7 +95,7 @@ public class UserService {
 
         //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
-                .url(BuildConfig.BASE_URL + Api.USER_SIGN_UP)
+                .url(Api.BASE_URL + Api.USER_SIGN_UP)
                 //http request post
                 .post(body)
                 .build();
@@ -152,7 +145,7 @@ public class UserService {
 
         //request ini untuk menjalankan servis http ke server
         request = new Request.Builder()
-                .url(BuildConfig.BASE_URL + Api.USER_GET)
+                .url(Api.BASE_URL + Api.USER_GET)
                 //http request post
                 .post(body)
                 .build();

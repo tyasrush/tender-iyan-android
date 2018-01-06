@@ -1,23 +1,14 @@
 package com.tender.iyan.service;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.format.DateFormat;
 import android.util.Log;
-
-import android.widget.Toast;
-import com.tender.iyan.BuildConfig;
 import com.tender.iyan.entity.Kategori;
 import com.tender.iyan.entity.Penawaran;
 import com.tender.iyan.entity.Tender;
 import com.tender.iyan.entity.User;
-import com.tender.iyan.service.api.Api;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.tender.iyan.service.config.Api;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -25,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -34,8 +24,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okhttp3.logging.HttpLoggingInterceptor;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Service yang mengatur dan memanage data ke server
@@ -59,8 +50,8 @@ public class TenderService {
 
   //untuk mengambil semua tender yang ada pada server
   public void getAll(final ListHomeView view, User user) {
-    String url = user != null ? BuildConfig.BASE_URL + Api.TENDER_LIST + "?id=" + user.getId()
-        : BuildConfig.BASE_URL + Api.TENDER_LIST;
+    String url = user != null ? Api.BASE_URL + Api.TENDER_LIST + "?id=" + user.getId()
+        : Api.BASE_URL + Api.TENDER_LIST;
     request = new Request.Builder().url(url).build();
 
     //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
@@ -127,7 +118,7 @@ public class TenderService {
   //untuk mengambil semua kategori dari server
   public void getKategoris(final ListKategoriView view) {
     //request ini untuk menjalankan servis http ke server
-    request = new Request.Builder().url(BuildConfig.BASE_URL + Api.KATEGORI_LIST).build();
+    request = new Request.Builder().url(Api.BASE_URL + Api.KATEGORI_LIST).build();
 
     //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
     client.newCall(request).enqueue(new Callback() {
@@ -195,7 +186,7 @@ public class TenderService {
     }
 
     //request ini untuk menjalankan servis http ke server
-    request = new Request.Builder().url(BuildConfig.BASE_URL + Api.TENDER_LIST).post(body).build();
+    request = new Request.Builder().url(Api.BASE_URL + Api.TENDER_LIST).post(body).build();
 
     //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
     client.newCall(request).enqueue(new Callback() {
@@ -273,7 +264,7 @@ public class TenderService {
         .build();
 
     //request ini untuk menjalankan servis http ke server
-    request = new Request.Builder().url(BuildConfig.BASE_URL + Api.TENDER_SAVE).post(body).build();
+    request = new Request.Builder().url(Api.BASE_URL + Api.TENDER_SAVE).post(body).build();
 
     //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
     client.newCall(request).enqueue(new Callback() {
@@ -327,7 +318,7 @@ public class TenderService {
 
     //request ini untuk menjalankan servis http ke server
     request =
-        new Request.Builder().url(BuildConfig.BASE_URL + Api.PENAWARAN_SAVE).post(body).build();
+        new Request.Builder().url(Api.BASE_URL + Api.PENAWARAN_SAVE).post(body).build();
 
     //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
     client.newCall(request).enqueue(new Callback() {
@@ -376,7 +367,7 @@ public class TenderService {
         .build();
 
     //request ini untuk menjalankan servis http ke server
-    request = new Request.Builder().url(BuildConfig.BASE_URL + Api.DEAL_SAVE).post(body).build();
+    request = new Request.Builder().url(Api.BASE_URL + Api.DEAL_SAVE).post(body).build();
 
     //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
     client.newCall(request).enqueue(new Callback() {
@@ -425,7 +416,7 @@ public class TenderService {
 
     //request ini untuk menjalankan servis http ke server
     request =
-        new Request.Builder().url(BuildConfig.BASE_URL + Api.PENAWARAN_LIST).post(body).build();
+        new Request.Builder().url(Api.BASE_URL + Api.PENAWARAN_LIST).post(body).build();
 
     //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
     client.newCall(request).enqueue(new Callback() {
@@ -498,7 +489,7 @@ public class TenderService {
 
     //request ini untuk menjalankan servis http ke server
     request =
-        new Request.Builder().url(BuildConfig.BASE_URL + Api.PENAWARAN_LIST).post(body).build();
+        new Request.Builder().url(Api.BASE_URL + Api.PENAWARAN_LIST).post(body).build();
 
     //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
     client.newCall(request).enqueue(new Callback() {
@@ -555,7 +546,7 @@ public class TenderService {
 
     //request ini untuk menjalankan servis http ke server
     request =
-        new Request.Builder().url(BuildConfig.BASE_URL + Api.TENDER_SEARCH).post(body).build();
+        new Request.Builder().url(Api.BASE_URL + Api.TENDER_SEARCH).post(body).build();
 
     //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
     client.newCall(request).enqueue(new Callback() {

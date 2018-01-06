@@ -1,12 +1,12 @@
-package com.tender.iyan.ui.activity.tender;
+package com.tender.iyan.ui.penawaran;
 
 import android.Manifest;
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,24 +21,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.tender.iyan.R;
-import com.tender.iyan.entity.Kategori;
-import com.tender.iyan.entity.Tender;
+import com.tender.iyan.entity.Penawaran;
 import com.tender.iyan.service.TenderService;
-import com.tender.iyan.ui.adapter.KategoriAdapter;
+import com.tender.iyan.util.LocationUtil;
 import com.tender.iyan.util.UserUtil;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
-public class AddActivity extends AppCompatActivity implements View.OnClickListener, TenderService.AddView, DatePickerDialog.OnDateSetListener, TenderService.ListKategoriView {
+
+public class AddActivity extends AppCompatActivity implements TenderService.UploadPenawaranView, View.OnClickListener, LocationUtil.TrackingLocation {
 
     private final int CAMERA = 0;
     private final int WRITE_EXTERNAL = 1;
@@ -46,39 +43,36 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private EditText nameText;
     private EditText descEditText;
     private EditText anggaranText;
-    private EditText waktuText;
     private EditText imageText;
-    private Spinner spinner;
+    private EditText latEditText;
+    private EditText lngEditText;
     private Button fotoButton;
     private Button saveButton;
-    private Button waktuButton;
-
+    private Button locationButton;
     private String imagePath;
-    private String waktu;
-
     private Uri fileImage;
 
+    private LocationUtil locationUtil;
     private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add);
+        setContentView(R.layout.activity_add_penawaran);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Tambah Penawaran");
+
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Tambah Tender");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        TenderService.getInstance().getKategoris(this);
-
         nameText = (EditText) findViewById(R.id.et_name);
         descEditText = (EditText) findViewById(R.id.et_deskripsi);
-        anggaranText = (EditText) findViewById(R.id.et_anggaran);
-        waktuText = (EditText) findViewById(R.id.et_waktu);
+        anggaranText = (EditText) findViewById(R.id.et_harga);
         imageText = (EditText) findViewById(R.id.et_gambar);
-        spinner = (Spinner) findViewById(R.id.spinner_kategori);
+        latEditText = (EditText) findViewById(R.id.et_lat);
+        lngEditText = (EditText) findViewById(R.id.et_lng);
 
         fotoButton = (Button) findViewById(R.id.btn_gambar);
         if (fotoButton != null)
@@ -88,9 +82,13 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         if (saveButton != null)
             saveButton.setOnClickListener(this);
 
-        waktuButton = (Button) findViewById(R.id.btn_waktu);
-        if (waktuButton != null)
-            waktuButton.setOnClickListener(this);
+        locationButton = (Button) findViewById(R.id.btn_find_location);
+        if (locationButton != null)
+            locationButton.setOnClickListener(this);
+
+        locationUtil = new LocationUtil(this);
+        locationUtil.connect();
+        locationUtil.setTrackingLocation(this);
 
         dialog = new ProgressDialog(this);
         dialog.setMessage("Tunggu sebentar...");
@@ -117,24 +115,27 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             } else if (anggaranText.getText().toString().equals("")) {
                 anggaranText.setError("Anggaran masih kosong");
                 anggaranText.requestFocus();
-            } else if (waktuText.getText().toString().equals("")) {
-                waktuText.setError("Waktu masih kosong");
-                waktuText.requestFocus();
             } else if (imageText.getText().toString().equals("")) {
                 imageText.setError("Foto masih kosong");
                 imageText.requestFocus();
+            } else if (latEditText.getText().toString().equals("")) {
+                latEditText.setError("latitude masih kosong");
+                latEditText.requestFocus();
+            } else if (lngEditText.getText().toString().equals("")) {
+                lngEditText.setError("longitude masih kosong");
+                lngEditText.requestFocus();
             } else {
-                Tender tender = new Tender();
-                tender.setIduser(UserUtil.getInstance(this).getId());
-                tender.setName(nameText.getText().toString());
-                tender.setDeskripsi(descEditText.getText().toString());
-                tender.setAnggaran(Integer.parseInt(anggaranText.getText().toString()));
-                tender.setWaktu(waktu);
-                tender.setIdKategori((int) spinner.getAdapter().getItemId(spinner.getSelectedItemPosition()));
-                tender.setFoto(imagePath);
-
+                Penawaran penawaran = new Penawaran();
+                penawaran.setIdTender(getIntent().getIntExtra("id_request", 0));
+                penawaran.setIdUser(UserUtil.getInstance(this).getId());
+                penawaran.setNama(nameText.getText().toString());
+                penawaran.setDeskripsi(descEditText.getText().toString());
+                penawaran.setHarga(Integer.parseInt(anggaranText.getText().toString()));
+                penawaran.setLat(Double.parseDouble(latEditText.getText().toString()));
+                penawaran.setLng(Double.parseDouble(lngEditText.getText().toString()));
+                penawaran.setFoto(imagePath);
                 dialog.show();
-                TenderService.getInstance().upload(this, tender);
+                TenderService.getInstance().uploadPenawaran(this, penawaran);
             }
         }
 
@@ -142,10 +143,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             showFileChooser();
         }
 
-        if (view.getId() == waktuButton.getId()) {
-            java.util.Calendar calendar = java.util.Calendar.getInstance();
-            new DatePickerDialog(this, this, calendar.get(java.util.Calendar.YEAR),
-                    calendar.get(java.util.Calendar.MONTH), calendar.get(java.util.Calendar.DAY_OF_MONTH)).show();
+        if (view.getId() == locationButton.getId()) {
+            locationUtil.find();
         }
     }
 
@@ -175,8 +174,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 .setItems(new String[]{"Galeri", "Kamera"}, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialogInterface, int i) {
                         if (i == 0) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                                    ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(AddActivity.this,
                                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                         WRITE_EXTERNAL);
@@ -188,8 +186,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                         }
 
                         if (i == 1) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                                    ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(AddActivity.this,
                                         new String[]{Manifest.permission.CAMERA},
                                         CAMERA);
@@ -222,6 +219,13 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileImage);
             startActivityForResult(cameraIntent, CAMERA);
         }
+
+        if (requestCode == LocationUtil.LOCATION_REQUEST
+                && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            locationUtil.find();
+        }
     }
 
     @Override
@@ -240,31 +244,27 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         Toast.makeText(this, "upload error : " + message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        waktu = i2 + "-" + (i1 + 1) + "-" + i;
-        waktuText.setText(i2 + "/" + (i1 + 1) + "/" + i);
-    }
-
-    private File getOutputMediaFile(){
+    private File getOutputMediaFile() {
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "TenderCamera");
 
-        if (!mediaStorageDir.exists()){
-            if (!mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
                 return null;
             }
         }
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         return new File(mediaStorageDir.getPath() + File.separator +
-                "IMG_"+ timeStamp + ".jpg");
+                "IMG_" + timeStamp + ".jpg");
     }
 
-    @Override public void onLoadedDataSuccess(List<Kategori> kategoris) {
-        spinner.setAdapter(new KategoriAdapter(kategoris));
+    @Override public void onLocationFound(Location location) {
+        latEditText.setText(String.valueOf(location.getLatitude()));
+        lngEditText.setText(String.valueOf(location.getLongitude()));
     }
 
-    @Override public void onLoadFailed(String message) {
-        Toast.makeText(this, "Terjadi kesalahan untuk load data kategori", Toast.LENGTH_SHORT).show();
+    @Override public void onLocationError(String message) {
+        Toast.makeText(this, "Terjadi kesalahan saat mencari lokasi", Toast.LENGTH_SHORT).show();
     }
 }

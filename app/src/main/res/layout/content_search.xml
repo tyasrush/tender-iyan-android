@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.tender.iyan.ui.activity.SearchActivity"
+    tools:context="com.tender.iyan.ui.SearchActivity"
     tools:showIn="@layout/activity_search"
     >
 

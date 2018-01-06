@@ -1,4 +1,4 @@
-package com.tender.iyan.ui.activity;
+package com.tender.iyan.ui.user;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

@@ -1,4 +1,4 @@
-package com.tender.iyan.ui.activity.tender;
+package com.tender.iyan.ui.tender;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class DetailActivity extends AppCompatActivity
@@ -81,7 +80,7 @@ public class DetailActivity extends AppCompatActivity
     fab.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
         Intent intent = new Intent(DetailActivity.this,
-            com.tender.iyan.ui.activity.penawaran.AddActivity.class);
+            com.tender.iyan.ui.penawaran.AddActivity.class);
         intent.putExtra("id_request", tender.getId());
         startActivity(intent);
       }

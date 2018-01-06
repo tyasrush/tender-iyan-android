@@ -1,6 +1,7 @@
-package com.tender.iyan.ui.fragment;
+package com.tender.iyan.ui.user.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,30 +15,29 @@ import android.widget.Toast;
 import com.tender.iyan.R;
 import com.tender.iyan.entity.User;
 import com.tender.iyan.service.UserService;
+import com.tender.iyan.ui.HomeActivity;
+import com.tender.iyan.util.UserUtil;
 
-public class SignUpFragment extends Fragment
-    implements UserService.SignUpView, View.OnClickListener {
+public class LoginFragment extends Fragment implements View.OnClickListener, UserService.LoginView {
 
   private EditText emailText;
   private EditText passwordText;
-  private EditText nameText;
-  private EditText contactText;
-  private EditText addressText;
+  private Button loginButton;
   private Button signUpButton;
   private ProgressDialog dialog;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_sign_up, container, false);
+    return inflater.inflate(R.layout.fragment_login, container, false);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     emailText = (EditText) view.findViewById(R.id.et_email);
     passwordText = (EditText) view.findViewById(R.id.et_password);
-    nameText = (EditText) view.findViewById(R.id.et_name);
-    contactText = (EditText) view.findViewById(R.id.et_contact);
-    addressText = (EditText) view.findViewById(R.id.et_address);
+    loginButton = (Button) view.findViewById(R.id.btn_login);
+    if (loginButton != null) loginButton.setOnClickListener(this);
+
     signUpButton = (Button) view.findViewById(R.id.btn_sign_up);
     if (signUpButton != null) signUpButton.setOnClickListener(this);
 
@@ -46,46 +46,43 @@ public class SignUpFragment extends Fragment
     dialog.setCancelable(false);
   }
 
-  @Override public void onSignUpSuccess() {
-    if (dialog.isShowing()) dialog.dismiss();
-
-    getFragmentManager().popBackStack();
-    Toast.makeText(getContext(), "Daftar sukses, silahkan login", Toast.LENGTH_SHORT).show();
-  }
-
-  @Override public void onSignUpFailed(String message) {
-    if (dialog.isShowing()) dialog.dismiss();
-
-    Toast.makeText(getContext(), "Daftar gagal, error - " + message, Toast.LENGTH_SHORT).show();
-  }
-
   @Override public void onClick(View view) {
-    if (view.getId() == signUpButton.getId()) {
+    if (view.getId() == loginButton.getId()) {
       if (emailText.getText().toString().equals("")) {
         emailText.setError("Email masih kosong");
         emailText.requestFocus();
       } else if (passwordText.getText().toString().equals("")) {
         passwordText.setError("Password masih kosong");
         passwordText.requestFocus();
-      } else if (nameText.getText().toString().equals("")) {
-        nameText.setError("Nama masih kosong");
-        nameText.requestFocus();
-      } else if (contactText.getText().toString().equals("")) {
-        contactText.setError("Kontak masih kosong");
-        contactText.requestFocus();
-      } else if (addressText.getText().toString().equals("")) {
-        addressText.setError("Alamat masih kosong");
-        addressText.requestFocus();
       } else {
         User user = new User();
         user.setEmail(emailText.getText().toString());
         user.setPassword(passwordText.getText().toString());
-        user.setName(nameText.getText().toString());
-        user.setContact(contactText.getText().toString());
-        user.setAlamat(addressText.getText().toString());
+        UserService.getInstance().login(this, user);
         dialog.show();
-        UserService.getInstance().signUp(this, user);
       }
     }
+
+    if (view.getId() == signUpButton.getId()) {
+      getFragmentManager().beginTransaction()
+          .replace(R.id.container_login, new SignUpFragment())
+          .addToBackStack(null)
+          .commit();
+    }
+  }
+
+  @Override public void onLoginSuccess(User user) {
+    if (dialog.isShowing()) dialog.dismiss();
+
+    UserUtil.getInstance(getContext()).setLoginState(user.getId(), true);
+    startActivity(new Intent(getContext(), HomeActivity.class));
+    getActivity().finish();
+    Toast.makeText(getContext(), "Login berhasil", Toast.LENGTH_SHORT).show();
+  }
+
+  @Override public void onLoginFailed(String message) {
+    if (dialog.isShowing()) dialog.dismiss();
+
+    Toast.makeText(getContext(), "Login gagal, error - " + message, Toast.LENGTH_SHORT).show();
   }
 }

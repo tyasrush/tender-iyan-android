@@ -1,6 +1,5 @@
-package com.tender.iyan.ui.activity;
+package com.tender.iyan.ui;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,12 +18,13 @@ import android.widget.Toast;
 
 import com.tender.iyan.R;
 import com.tender.iyan.entity.Tender;
-import com.tender.iyan.entity.User;
 import com.tender.iyan.service.TenderService;
-import com.tender.iyan.ui.activity.tender.AddActivity;
-import com.tender.iyan.ui.activity.tender.DetailActivity;
-import com.tender.iyan.ui.activity.tender.MineActivity;
+import com.tender.iyan.ui.tender.AddActivity;
+import com.tender.iyan.ui.tender.DetailActivity;
+import com.tender.iyan.ui.tender.MineActivity;
 import com.tender.iyan.ui.adapter.HomeAdapter;
+import com.tender.iyan.ui.user.LoginActivity;
+import com.tender.iyan.ui.user.ProfileActivity;
 import com.tender.iyan.util.UserUtil;
 
 import java.util.ArrayList;
@@ -143,19 +142,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onLoadedDataSuccess(List<Tender> tenders) {
-        //Log.d(getClass().getSimpleName(), "onLoadedDataSuccess: " + tenders.toString());
-//        if (progressDialog != null && progressDialog.isShowing())
-//            progressDialog.dismiss();
-
         this.tenders.addAll(tenders);
         homeAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoadFailed(String message) {
-//        if (progressDialog != null && progressDialog.isShowing())
-//            progressDialog.dismiss();
-
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 

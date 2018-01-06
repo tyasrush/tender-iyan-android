@@ -1,4 +1,4 @@
-package com.tender.iyan.ui.activity.tender;
+package com.tender.iyan.ui.tender;
 
 import android.content.Intent;
 import android.os.Bundle;
