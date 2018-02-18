@@ -12,18 +12,29 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class UserService {
 
+    private static UserService instance;
     private OkHttpClient client = new OkHttpClient();
     private RequestBody body;
     private Request request;
 
     public static UserService getInstance() {
-        return new UserService();
+        if (instance == null) {
+            instance = new UserService();
+            //baris ini -> statement untuk inisiasi HttpLoggingInterceptor untuk keperluan log data yang didapat dari server
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            //baris ini -> statement untuk set level dari log ini
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            //baris ini -> statement untuk inisiasi variabel client dengan interceptor
+            instance.client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        }
+        return instance;
     }
 
     //untuk melakukan pengecekan user ke server

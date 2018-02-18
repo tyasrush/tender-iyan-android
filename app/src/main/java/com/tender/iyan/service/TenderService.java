@@ -24,6 +24,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +39,7 @@ public class TenderService {
   public static final int CHEAPEST = 1;
   public static final int MOST_EXPENSIVE = 2;
 
+  private static TenderService instance;
   private OkHttpClient client = new OkHttpClient();
   private RequestBody body;
   private Request request;
@@ -45,7 +47,17 @@ public class TenderService {
   private final String TAG = getClass().getName();
 
   public static TenderService getInstance() {
-    return new TenderService();
+    if (instance == null) {
+      instance = new TenderService();
+      //baris ini -> statement untuk inisiasi HttpLoggingInterceptor untuk keperluan log data yang didapat dari server
+      HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+      //baris ini -> statement untuk set level dari log ini
+      interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+      //baris ini -> statement untuk inisiasi variabel client dengan interceptor
+      instance.client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+    }
+
+    return instance;
   }
 
   //untuk mengambil semua tender yang ada pada server
@@ -317,8 +329,7 @@ public class TenderService {
         .build();
 
     //request ini untuk menjalankan servis http ke server
-    request =
-        new Request.Builder().url(Api.BASE_URL + Api.PENAWARAN_SAVE).post(body).build();
+    request = new Request.Builder().url(Api.BASE_URL + Api.PENAWARAN_SAVE).post(body).build();
 
     //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
     client.newCall(request).enqueue(new Callback() {
@@ -415,8 +426,7 @@ public class TenderService {
         .build();
 
     //request ini untuk menjalankan servis http ke server
-    request =
-        new Request.Builder().url(Api.BASE_URL + Api.PENAWARAN_LIST).post(body).build();
+    request = new Request.Builder().url(Api.BASE_URL + Api.PENAWARAN_LIST).post(body).build();
 
     //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
     client.newCall(request).enqueue(new Callback() {
@@ -488,8 +498,7 @@ public class TenderService {
     body = builder.build();
 
     //request ini untuk menjalankan servis http ke server
-    request =
-        new Request.Builder().url(Api.BASE_URL + Api.PENAWARAN_LIST).post(body).build();
+    request = new Request.Builder().url(Api.BASE_URL + Api.PENAWARAN_LIST).post(body).build();
 
     //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
     client.newCall(request).enqueue(new Callback() {
@@ -545,8 +554,7 @@ public class TenderService {
         new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("q", param).build();
 
     //request ini untuk menjalankan servis http ke server
-    request =
-        new Request.Builder().url(Api.BASE_URL + Api.TENDER_SEARCH).post(body).build();
+    request = new Request.Builder().url(Api.BASE_URL + Api.TENDER_SEARCH).post(body).build();
 
     //untuk melakukan asynchronous call, agar pengambilan data tidak dieksekusi di foreground android atau antar muka android
     client.newCall(request).enqueue(new Callback() {

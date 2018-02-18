@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.tender.iyan.ui.penawaran.DetailActivity"
+    tools:showIn="@layout/activity_detail2"
+    >
+
+  <ImageView
+      android:id="@+id/image"
+      android:layout_width="match_parent"
+      android:layout_height="200dp"
+      android:contentDescription="@string/app_name"
+      android:scaleType="centerCrop"
+      />
+
+  <TextView
+      android:id="@+id/title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/fab_margin"
+      android:layout_marginTop="@dimen/fab_margin"
+      android:gravity="center"
+      android:textAppearance="?android:textAppearanceMedium"
+      android:textColor="@android:color/black"
+      android:textStyle="bold"
+      />
+
+  <Button
+      android:id="@+id/btn"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Upload Bukti Transfer"
+      />
+
+</LinearLayout>

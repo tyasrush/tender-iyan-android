@@ -1,57 +1,60 @@
 <resources>
-    <string name="app_name">Tender</string>
-    <string name="action_settings">Settings</string>
+  <string name="app_name">Tender</string>
+  <string name="action_settings">Settings</string>
 
-    <string name="no_account">Belum punya akun?\nSilahkan daftar</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="login">Login</string>
-    <string name="sign_up">Daftar</string>
-    <string name="name">Nama</string>
-    <string name="contact">No. Kontak</string>
-    <string name="address">Alamat</string>
+  <string name="no_account">Belum punya akun?\nSilahkan daftar</string>
+  <string name="email">Email</string>
+  <string name="password">Password</string>
+  <string name="login">Login</string>
+  <string name="sign_up">Daftar</string>
+  <string name="name">Nama</string>
+  <string name="contact">No. Kontak</string>
+  <string name="address">Alamat</string>
 
-    <string name="description">Deskripsi</string>
-    <string name="anggaran">Anggaran</string>
-    <string name="waktu">Batas Waktu</string>
-    <string name="foto">Foto</string>
-    <string name="find_location">Cari lokasi saya</string>
-    <string name="harga">Harga</string>
-    <string name="lat">Latitude</string>
-    <string name="lng">Longitude</string>
+  <string name="description">Deskripsi</string>
+  <string name="anggaran">Anggaran</string>
+  <string name="waktu">Batas Waktu</string>
+  <string name="foto">Foto</string>
+  <string name="find_location">Cari lokasi saya</string>
+  <string name="harga">Harga</string>
+  <string name="lat">Latitude</string>
+  <string name="lng">Longitude</string>
 
-    <string name="profil">Profil</string>
-    <string name="my_request">Tender</string>
-    <string name="settings">Pengaturan</string>
-    <string name="logout">Keluar</string>
-    <string name="send">Kirim</string>
-    <string name="save">Simpan</string>
-    <string name="cancel">Batal</string>
-    <string name="refresh">Segarkan</string>
-    <string name="filter">Filter</string>
-    <string name="alphabet">Alphabet</string>
-    <string name="cheapest">Termurah</string>
-    <string name="expensive">Termahal</string>
+  <string name="profil">Profil</string>
+  <string name="my_request">Tender</string>
+  <string name="settings">Pengaturan</string>
+  <string name="logout">Keluar</string>
+  <string name="send">Kirim</string>
+  <string name="save">Simpan</string>
+  <string name="cancel">Batal</string>
+  <string name="refresh">Segarkan</string>
+  <string name="filter">Filter</string>
+  <string name="alphabet">Alphabet</string>
+  <string name="cheapest">Termurah</string>
+  <string name="expensive">Termahal</string>
 
-    <string name="penawaran">Penawaran</string>
+  <string name="penawaran">Penawaran</string>
 
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_home">HomeActivity</string>
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="title_activity_home">HomeActivity</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="title_activity_detail">DetailActivity</string>
-    <string name="title_activity_add">AddActivity</string>
-    <string name="title_activity_mine">MineActivity</string>
-    <string name="title_activity_profile">ProfileActivity</string>
-    <string name="title_activity_search">Cari Tender</string>
-    <string name="location_key">AIzaSyCOlE_ReKxeozahjkcIk80pkRBa7yFvv3k</string>
-    <string name="lokasi">Lokasi</string>
-    <string name="deal">Deal</string>
-    <string name="kategori">Kategori</string>
-    <string name="ketikkan_kata">Ketikkan kata ...</string>
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
+  <string name="title_activity_detail">DetailActivity</string>
+  <string name="title_activity_add">AddActivity</string>
+  <string name="title_activity_mine">MineActivity</string>
+  <string name="title_activity_profile">ProfileActivity</string>
+  <string name="title_activity_search">Cari Tender</string>
+  <string name="location_key">AIzaSyCOlE_ReKxeozahjkcIk80pkRBa7yFvv3k</string>
+  <string name="lokasi">Lokasi</string>
+  <string name="deal">Deal</string>
+  <string name="kategori">Kategori</string>
+  <string name="ketikkan_kata">Ketikkan kata ...</string>
   <string name="cari_tender">Cari tender...</string>
+  <string name="title_activity_deals">Daftar Penawaran Berhasil</string>
+  <string name="title_activity_upload">Upload Bukti Transfer</string>
+  <string name="deals">Deals</string>
 
 </resources>

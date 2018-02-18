@@ -7,7 +7,7 @@ package com.tender.iyan.service.config;
 public interface Api {
     //baris ini -> statement untuk menyimpan url sebagai url dasar dari semua service
     //String BASE_URL = "https://ryan-tender.000webhostapp.com/api/";
-    String BASE_URL = "http://10.10.2.197/tender/api/";
+    String BASE_URL = "http://192.168.26.102/tender/api/";
 
     //baris ini -> statement untuk menyimpan url dari api yang diperlukan untuk login pengguna
     String USER_LOGIN = "user/login.php";
@@ -37,4 +37,10 @@ public interface Api {
 
     //baris ini -> statement untuk menyimpan url dari api yang diperlukan untuk menyimpan data deal
     String DEAL_SAVE = "deal/save.php";
+    //baris ini -> statement untuk menyimpan url dari api yang diperlukan untuk mengupload bukti transfer
+    String DEAL_UPLOAD = "deal/upload.php";
+    //baris ini -> statement untuk menyimpan url dari api yang diperlukan untuk mendapatkan semua data deal
+    String DEAL_LIST = "deal/list.php";
+    //baris ini -> statement untuk menyimpan url dari api yang diperlukan untuk mendapatkan data deal
+    String DEAL_GET= "deal/get.php";
 }

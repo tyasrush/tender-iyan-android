@@ -56,6 +56,7 @@
       <intent-filter>
         <action android:name="android.intent.action.SEARCH" />
       </intent-filter>
+
       <meta-data
           android:name="android.app.searchable"
           android:resource="@xml/tender_search" />
@@ -67,6 +68,19 @@
     <meta-data
         android:name="com.google.android.geo.API_KEY"
         android:value="@string/location_key" />
+
+    <activity
+        android:name=".ui.penawaran.DealsActivity"
+        android:label="@string/title_activity_deals"
+        android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+        android:name=".ui.deal.UploadActivity"
+        android:label="@string/title_activity_upload"
+        android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+        android:name=".ui.penawaran.DetailActivity"
+        android:label="@string/title_activity_detail"
+        android:theme="@style/AppTheme.NoActionBar"/>
   </application>
 
 </manifest>

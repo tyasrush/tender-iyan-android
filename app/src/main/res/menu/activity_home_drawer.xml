@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_perm_identity_black_24dp"
-            android:title="@string/profil" />
-        <item
-            android:id="@+id/nav_request"
-            android:icon="@drawable/ic_library_books_black_24dp"
-            android:title="@string/my_request" />
-        <item
-            android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_exit_to_app_black_24dp"
-            android:title="@string/logout" />
-    </group>
+  <group android:checkableBehavior="single">
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_perm_identity_black_24dp"
+        android:title="@string/profil" />
+    <item
+        android:id="@+id/nav_request"
+        android:icon="@drawable/ic_library_books_black_24dp"
+        android:title="@string/my_request" />
+    <item
+        android:id="@+id/nav_deal"
+        android:icon="@drawable/ic_done_all_black_24dp"
+        android:title="@string/deals" />
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/ic_exit_to_app_black_24dp"
+        android:title="@string/logout" />
+  </group>
 
 </menu>
